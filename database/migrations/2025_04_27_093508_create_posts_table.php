@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('body');
-            $table->string('cover');
+            $table->string('cover')->nullable();
             $table->foreignId('category_id')->nullable();
             $table->foreignId('user_id')->nullable();
-            $table->foreignId('comment_id');
+            $table->foreignId('comment_id')->nullable();
             $table->timestamps();
         });
     }

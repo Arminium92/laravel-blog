@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\PostController;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Post;
@@ -17,19 +20,19 @@ Route::get('dashboard', function () {
 
 
 // Auth Routes
-Route::resource('posts', Post::class)->middleware('auth')->except('index', 'show');
+Route::resource('posts', PostController::class)->middleware('auth')->except('index', 'show');
 
-Route::resource('categories', Category::class)->middleware('auth')->except('index', 'show');
+Route::resource('categories', CategoryController::class)->middleware('auth')->except('index', 'show');
 
-Route::resource('comments', Comment::class)->middleware('auth')->except('index', 'show');
+Route::resource('comments', CommentController::class)->middleware('auth')->except('index', 'show');
 
 
 // Public Routes
-Route::resource('posts', Post::class)->only('index', 'show');
+Route::resource('posts', PostController::class)->only('index', 'show');
 
-Route::resource('categories', Category::class)->only('index', 'show');
+Route::resource('categories', CategoryController::class)->only('index', 'show');
 
-Route::resource('comments', Comment::class)->only('index', 'show');
+Route::resource('comments', CommentController::class)->only('index', 'show');
 
 
 

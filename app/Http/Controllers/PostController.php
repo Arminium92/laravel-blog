@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Post;
-use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
 {
@@ -14,6 +14,7 @@ class PostController extends Controller
      */
     public function index()
     {
+        Log::info('Visited Posts List');
         $posts = Post::all();
         return view('posts.index', compact('posts'));
     }
@@ -34,13 +35,13 @@ class PostController extends Controller
     {
         $request->validate([
             'title' => 'required|string|min:3',
-            'content' => 'required|string|max:100',
+            'body' => 'required|string|max:100',
         ]);
 
         $post = new Post();
         $post->title = $request->title;
-        $post->content = $request->content;
-        $post->tag_id = $request->tag_id;
+        $post->body = $request->body;
+        $post->category_id = $request->category_id;
 
         $post->save();
 
@@ -71,12 +72,12 @@ class PostController extends Controller
     {
         $request->validate([
             'title' => 'required|string|min:3',
-            'content' => 'required|string|max:100',
+            'body' => 'required|string|max:100',
         ]);
 
         $post->title = $request->title;
-        $post->content = $request->content;
-        $post->tag_id = $request->tag_id;
+        $post->body = $request->body;
+        $post->category_id = $request->category_id;
 
         return redirect()->route('posts.index')->with('update', 'Post updated successfully.');
     }
