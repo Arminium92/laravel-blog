@@ -12,7 +12,8 @@ class CommentController extends Controller
      */
     public function index()
     {
-        //
+        $comments = Comment::all();
+        return view('comments.index', compact('comments'));
     }
 
     /**
@@ -20,7 +21,7 @@ class CommentController extends Controller
      */
     public function create()
     {
-        //
+        return view('comments.create');
     }
 
     /**
@@ -28,7 +29,16 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'body' => 'required|string|min:20|max:300',
+        ]);
+
+        $comment = new Comment();
+        $comment->body = $request->body;
+
+        $comment->save();
+
+        return redirect()->route('comments.index')->with('create', 'Comment created successfully.');
     }
 
     /**
@@ -36,7 +46,7 @@ class CommentController extends Controller
      */
     public function show(Comment $comment)
     {
-        //
+        return view('comments.show', compact('comment'));
     }
 
     /**
@@ -44,7 +54,7 @@ class CommentController extends Controller
      */
     public function edit(Comment $comment)
     {
-        //
+        return view('comments.edit', compact('comment'));
     }
 
     /**
@@ -52,7 +62,14 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
-        //
+        $request->validate([
+            'body' => 'required|string|min:20|max:300',
+        ]);
+
+        $comment->body = $request->body;
+        $comment->save();
+
+        return redirect()->route('comments.index')->with('update', 'Comment updated successfully.');
     }
 
     /**
@@ -60,6 +77,7 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        //
+        $comment->delete();
+        return redirect()->route('comments.index')->with('delete', 'Comment deleted successfully.');
     }
 }
