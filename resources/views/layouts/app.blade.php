@@ -15,6 +15,8 @@
             <a href="{{route('categories.index')}}">Categories</a> |
             <a href="{{route('posts.create')}}">Create Post</a> |
             <a href="{{route('categories.create')}}">Create Tag</a> |
+            <a href="{{route('comments.index')}}">Comments</a> |
+            <a href="{{route('comments.create')}}">Add a comment</a> |
             <a href="/">Login</a> |
             <a href="/">Register</a> |
         </nav>

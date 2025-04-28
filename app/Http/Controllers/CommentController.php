@@ -30,10 +30,12 @@ class CommentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'author' => 'required|string|min:3',
             'body' => 'required|string|min:20|max:300',
         ]);
 
         $comment = new Comment();
+        $comment->author = $request->author;
         $comment->body = $request->body;
 
         $comment->save();
@@ -63,9 +65,11 @@ class CommentController extends Controller
     public function update(Request $request, Comment $comment)
     {
         $request->validate([
+            'author' => 'required|string|min:3',
             'body' => 'required|string|min:20|max:300',
         ]);
 
+        $comment->author = $request->author;
         $comment->body = $request->body;
         $comment->save();
 
