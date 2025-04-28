@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
 {
@@ -12,6 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
+        Log::info('Visited Category List');
         $categories = Category::all();
         return view('categories.index', compact('categories'));
     }
@@ -27,11 +30,9 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|min:3',
-        ]);
+
 
         $category = new Category();
         $category->name = $request->name;
@@ -60,11 +61,8 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(CategoryRequest $request, Category $category)
     {
-        $request->validate([
-            'name' => 'required|string|min:3',
-        ]);
 
         $category->name = $request->name;
         $category->description = $request->description;

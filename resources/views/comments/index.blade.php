@@ -23,7 +23,7 @@
                 <li>
                     <a href="{{ route('comments.show', $comment->id) }}">{{ $comment->body }}
                         <span>
-                            {{ $comment->created_at }}
+                           | {{ $comment->created_at }}
                         </span>| <span>{{ $comment->author }}</span>
                     </a>
 

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CommentRequest;
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CommentController extends Controller
 {
@@ -12,6 +14,7 @@ class CommentController extends Controller
      */
     public function index()
     {
+        Log::info('Visited Comments List');
         $comments = Comment::all();
         return view('comments.index', compact('comments'));
     }
@@ -27,12 +30,9 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CommentRequest $request)
     {
-        $request->validate([
-            'author' => 'required|string|min:3',
-            'body' => 'required|string|min:20|max:300',
-        ]);
+
 
         $comment = new Comment();
         $comment->author = $request->author;
@@ -62,12 +62,8 @@ class CommentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Comment $comment)
+    public function update(CommentRequest $request, Comment $comment)
     {
-        $request->validate([
-            'author' => 'required|string|min:3',
-            'body' => 'required|string|min:20|max:300',
-        ]);
 
         $comment->author = $request->author;
         $comment->body = $request->body;
