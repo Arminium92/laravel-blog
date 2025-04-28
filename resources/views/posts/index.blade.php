@@ -13,15 +13,20 @@
                         @method('DELETE')
                         <button type="submit">Delete</button>
                     </form> | Category: {{ $post->category->name ?? 'No Category' }}
-                    
+
                 </li>
             @endforeach
         </ul>
-        @if(session('delete'))
+        @if (session('delete'))
             <div>{{ session('delete') }}</div>
         @endif
-        @if(session('update'))
+        @if (session('update'))
             <div>{{ session('update') }}</div>
+        @endif
+        @if (session('comment-error'))
+            <div>
+                <h2 class="text-red-500">{{ session('comment-error') }}</h2>
+            </div>
         @endif
     </div>
 @endsection

@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
+use App\Http\Middleware\IsAdminMiddleware;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Post;
@@ -24,7 +25,7 @@ Route::resource('posts', PostController::class)->middleware('auth')->except('ind
 
 Route::resource('categories', CategoryController::class)->middleware('auth')->except('index', 'show');
 
-Route::resource('comments', CommentController::class)->middleware('auth')->except('index', 'show');
+Route::resource('comments', CommentController::class)->middleware(IsAdminMiddleware::class);
 
 
 // Public Routes
@@ -32,7 +33,7 @@ Route::resource('posts', PostController::class)->only('index', 'show');
 
 Route::resource('categories', CategoryController::class)->only('index', 'show');
 
-Route::resource('comments', CommentController::class)->only('index', 'show');
+Route::resource('comments', CommentController::class)->only('create', 'store', 'index');
 
 
 
