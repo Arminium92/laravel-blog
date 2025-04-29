@@ -7,6 +7,7 @@
         <ul>
             @foreach ($posts as $post)
                 <li><a href="{{ route('posts.show', $post->id) }}">{{ $post->title }}</a>|
+                    <span>{{ $post->jalaliDate }}</span>
                     <a href="{{ route('posts.edit', $post->id) }}">Edit</a> |
                     <form action="{{ route('posts.destroy', $post->id) }}" method="POST" style="display:inline;">
                         @csrf
