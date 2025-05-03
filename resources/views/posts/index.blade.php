@@ -4,6 +4,17 @@
     <div>
         <h1>Posts</h1>
         <hr>
+
+        <form action="">
+            <select name="category_id" id="category_id">
+                <option value="">Select Category</option>
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
+            </select>
+            <input type="text" name="keyword" id="keyword">
+            <input type="submit" value="search">
+        </form>
         <ul>
             @foreach ($posts as $post)
                 <li><a href="{{ route('posts.show', $post->id) }}">{{ $post->title }}</a>|
