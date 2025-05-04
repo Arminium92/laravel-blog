@@ -37,10 +37,11 @@ class CommentController extends Controller
         $comment = new Comment();
         $comment->author = $request->author;
         $comment->body = $request->body;
+        $comment->post_id = $request->post_id;
 
         $comment->save();
 
-        return redirect()->route('comments.index')->with('create', 'Comment created successfully.');
+        return redirect()->back()->with('success_comment', 'Comment added successfully.');
     }
 
     /**

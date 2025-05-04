@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('cover')->nullable();
             $table->foreignId('category_id')->nullable();
             $table->foreignId('user_id')->nullable();
-            $table->foreignId('comment_id')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

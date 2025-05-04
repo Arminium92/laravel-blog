@@ -81,10 +81,6 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, Post $post)
     {
-        $request->validate([
-            'title' => 'required|string|min:3',
-            'body' => 'required|string|max:100',
-        ]);
 
         $post->title = $request->title;
         $post->body = $request->body;

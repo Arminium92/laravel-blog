@@ -23,8 +23,9 @@ class CommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'author' => 'required|string|min:3',
-            'body' => 'required|string|min:20|max:300',
+            'author' => 'required|string|max:255',
+            'body' => 'required|string',
+            'post_id' => 'required|exists:posts,id'
         ];
     }
 }
