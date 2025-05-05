@@ -6,6 +6,7 @@ use App\Http\Requests\PostRequest;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
@@ -53,6 +54,7 @@ class PostController extends Controller
         $post->title = $request->title;
         $post->body = $request->body;
         $post->category_id = $request->category_id;
+        $post->user_id = Auth::id();
 
         $post->save();
 
