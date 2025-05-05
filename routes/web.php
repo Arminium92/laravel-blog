@@ -27,6 +27,7 @@ Route::resource('categories', CategoryController::class)->middleware('auth')->ex
 
 Route::resource('comments', CommentController::class)->middleware(IsAdminMiddleware::class);
 
+Route::get('/user-posts', [PostController::class, 'userPosts'])->middleware('auth')->name('user-posts');
 
 // Public Routes
 Route::resource('posts', PostController::class)->only('index', 'show');
