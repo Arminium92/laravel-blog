@@ -66,6 +66,8 @@ return new class extends Migration
     }
 };
 ```
+## Important Alternative!
+#### Instead of creating and modifying soft delete files, you can just add ```$table->softDeletes();``` to your existing migration files. This will add the `deleted_at` column to your tables. This is the recommended way to add soft deletes to your models. 
 
 ### 3. Update Models
 Add the SoftDeletes trait to your Post and Comment models:

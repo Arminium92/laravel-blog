@@ -18,6 +18,7 @@
             <a href="{{ route('comments.index') }}" style="text-decoration: none; padding: .5rem 1rem; background-color: lightgray; border-radius: .3rem; cursor: pointer;">Comments</a> |
           
             <form action="{{ route('logout') }}" method="post">
+                @csrf
                 <button type="submit" style="text-decoration: none; padding: .5rem 1rem; background-color: lightgray; border-radius: .3rem; cursor: pointer; border:none;">Logout</button>
             </form> |
             <a href="{{ route('dashboard') }}" style="text-decoration: none; padding: .5rem 1rem; background-color: lightgray; border-radius: .3rem; cursor: pointer;">Dashboard</a> |

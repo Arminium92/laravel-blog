@@ -23,17 +23,17 @@
                 <li>
                     <a href="{{ route('comments.show', $comment->id) }}">{{ $comment->body }}
                         <span>
-                           | {{ $comment->created_at }}
+                            | {{ $comment->created_at }}
                         </span>| <span>{{ $comment->author }}</span>
-                    </a>
-
-                    | <a href="{{ route('comments.edit', $comment->id) }}">Edit</a> |
-
-                    <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit">Delete</button>
-                    </form>
+                    </a><span>|</span>
+                    @if (Auth::user()->isAdmin())
+                        <a href="{{ route('comments.edit', $comment->id) }}">Edit</a> |
+                        <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit">Delete</button>
+                        </form>
+                    @endif
 
                 </li>
             @endforeach
