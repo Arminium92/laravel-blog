@@ -55,6 +55,9 @@ class PostController extends Controller
         $post->body = $request->body;
         $post->category_id = $request->category_id;
         $post->user_id = Auth::id();
+        if($request->hasFile('cover')){
+            $post->cover = $request->file('cover')->store('uploads', 'public');
+        }
 
         $post->save();
 
@@ -87,6 +90,10 @@ class PostController extends Controller
         $post->title = $request->title;
         $post->body = $request->body;
         $post->category_id = $request->category_id;
+        if($request->hasFile('cover')){
+            $post->cover = $request->file('cover')->store('uploads', 'public');
+        }   
+        $post->save();
 
         return redirect()->route('posts.index')->with('update', 'Post updated successfully.');
     }

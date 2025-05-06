@@ -13,7 +13,7 @@
             </div>
         @endif
         <hr>
-        <form action="{{ route('posts.update', $post->id) }}" method="post">
+        <form action="{{ route('posts.update', $post->id) }}" method="post" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div>
@@ -38,6 +38,15 @@
                             {{ $category->name }}</option>
                     @endforeach
                 </select>
+                <br><br>
+                <label for="cover">Cover Image</label>
+                <br>
+                <h3>Current Image:</h3>
+                @if ($post->cover)
+                    <img src="{{ asset('storage/' . $post->cover) }}" alt="Cover Image" style="max-width: 100px;">
+                @endif
+                <br>
+                <input type="file" name="cover" id="cover" value="{{ old('cover', $post->cover) }}">
                 <br><br>
             </div>
             <button type="submit">Update Post</button>
