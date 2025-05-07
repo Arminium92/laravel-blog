@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PostRequest;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -20,7 +21,7 @@ class PostController extends Controller
         // dd($request->all());
         $searchQuery = $request->keyword;
         $searchCat = $request->category_id;
-        
+
 
         $posts = Post::all();
         $categories = Category::all();
@@ -55,7 +56,7 @@ class PostController extends Controller
         $post->body = $request->body;
         $post->category_id = $request->category_id;
         $post->user_id = Auth::id();
-        if($request->hasFile('cover')){
+        if ($request->hasFile('cover')) {
             $post->cover = $request->file('cover')->store('uploads', 'public');
         }
 
@@ -77,6 +78,10 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        $user = Auth::user();
+        if (!$user->isAdmin() && $post->user_id !== $user->id) {
+            abort(403, 'Unauthorized action!');
+        }
         $categories = Category::all();
         return view('posts.edit', compact('post', 'categories'));
     }
@@ -86,13 +91,16 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, Post $post)
     {
-
+        $user = Auth::user();
+        if (!$user->isAdmin() && $post->user_id !== $user->id) {
+            abort(403, 'Unauthorized action!');
+        }
         $post->title = $request->title;
         $post->body = $request->body;
         $post->category_id = $request->category_id;
-        if($request->hasFile('cover')){
+        if ($request->hasFile('cover')) {
             $post->cover = $request->file('cover')->store('uploads', 'public');
-        }   
+        }
         $post->save();
 
         return redirect()->route('posts.index')->with('update', 'Post updated successfully.');
@@ -103,6 +111,10 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        $user = Auth::user();
+        if (!$user->isAdmin() && $post->user_id !== $user->id) {
+            abort(403, 'Unauthorized action!');
+        }
         $post->delete();
         return redirect()->route('posts.index')->with('delete', 'Post deleted successfully.');
     }
