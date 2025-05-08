@@ -4,20 +4,25 @@
     <div>
         <h1>Create Category</h1>
         @foreach ($errors->all() as $error)
-        <li>
-            {{ $error }}
-        </li>
-    @endforeach
+            <li>
+                {{ $error }}
+            </li>
+        @endforeach
         <hr>
-        <form action="{{ route('categories.store') }}" method="post">
-            @csrf
-            <div>
-                <label for="name">Category Name:</label>
-                <br>
-                <input type="text" name="name" id="name" required>
-                <br><br>
-            </div>
-            <button type="submit">Create</button>
-        </form>
+        @if (Auth::user()->isAdmin())
+            <form action="{{ route('categories.store') }}" method="post">
+                @csrf
+                <div>
+                    <label for="name">Category Name:</label>
+                    <br>
+                    <input type="text" name="name" id="name" required>
+                    <br><br>
+                </div>
+                <button type="submit">Create</button>
+            </form>
+        @else
+            <p>You Are Not allowed to add categories</p>
+        @endif
+
     </div>
 @endsection

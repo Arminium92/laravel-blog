@@ -4,6 +4,8 @@
     <div>
         <h1>Categories</h1>
         <hr>
+        @if (Auth::user()->isAdmin())
+            
         <ul>
             @foreach ($categories as $category)
                 <li><a href="{{ route('categories.show', $category->id) }}">{{ $category->name }}</a>|
@@ -18,6 +20,9 @@
                 </li>
             @endforeach
         </ul>
+        @else
+        <p>You Are Not allowed to add categories</p>
+        @endif
         @if (session('delete'))
             <div>{{ session('delete') }}</div>
         @endif
