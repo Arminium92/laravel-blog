@@ -19,7 +19,16 @@
         @endforeach
         <hr>
         @if (Auth::user()->isAdmin())
+            <form action="">
+                @csrf
+                <input type="text" name="keyword" id="keyword" placeholder="search comment">
+                <input type="submit" value="search">
+            </form>
             <ul>
+
+                @if (!empty($error))
+                    <p class="text-red-500">{{ $error }}</p>
+                @endif
 
                 @foreach ($comments as $comment)
                     <li>
@@ -40,7 +49,7 @@
 
                     </li>
                 @endforeach
-                @else
+            @else
                 <p>You are not allowed to see all comments</p>
             </ul>
         @endif

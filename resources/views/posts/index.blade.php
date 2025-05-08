@@ -6,6 +6,7 @@
         <hr>
 
         <form action="">
+            @csrf
             <select name="category_id" id="category_id">
                 <option value="">Select Category</option>
                 @foreach ($categories as $category)

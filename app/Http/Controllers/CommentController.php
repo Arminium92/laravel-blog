@@ -13,11 +13,22 @@ class CommentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         Log::info('Visited Comments List');
-        $comments = Comment::all();
-        return view('comments.index', compact('comments'));
+        $searchQuery = $request->keyword;
+        $error = '';
+
+        if ($searchQuery) {
+            $comments = Comment::where('author', 'LIKE', '%' . $searchQuery . "%")->get();
+            if($comments->isEmpty()) {
+                $error = 'Author does not exist.';
+            }
+            // dd($comments);
+        } else {
+            $comments = Comment::all();
+        }
+        return view('comments.index', compact('comments', 'error'));
     }
 
     /**

@@ -4,9 +4,6 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Middleware\IsAdminMiddleware;
-use App\Models\Category;
-use App\Models\Comment;
-use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 

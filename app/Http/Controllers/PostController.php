@@ -25,7 +25,7 @@ class PostController extends Controller
         $posts = Post::all();
         $categories = Category::all();
         if ($searchQuery) {
-            $posts = Post::where('title', 'LIKE', '%' . $searchQuery . '%')->get();
+            $posts = Post::where('title', ' ', '%' . $searchQuery . '%')->get();
         }
         if ($searchQuery && $searchCat) {
             $posts = Post::where('title', 'LIKE', '%' . $searchQuery . '%')->where('category_id', '=', $searchCat)->get();
