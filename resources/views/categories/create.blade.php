@@ -9,7 +9,7 @@
             </li>
         @endforeach
         <hr>
-        @if (Auth::user()->isAdmin())
+        @if (Auth::user()->is_admin)
             <form action="{{ route('categories.store') }}" method="post">
                 @csrf
                 <div>

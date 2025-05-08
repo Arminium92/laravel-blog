@@ -8,7 +8,7 @@
         <p>Created at: {{ $comment->jalaliDate }}</p>
         <p>Body: {{ $comment->body }}</p>
 
-        @if (auth()->user()->isAdmin() || $comment->user_id === auth()->id())
+        @if (auth()->user()->is_admin || $comment->user_id === auth()->id())
             <button><a href="{{ route('comments.edit', $comment->id) }}">Edit</a></button>
             <form action="{{ route('comments.destroy', $comment->id) }}" method="post">
                 @csrf

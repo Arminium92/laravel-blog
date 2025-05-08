@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div>
-        <h1>EditComment</h1>
+        <h1>Edit Comment</h1>
         @foreach ($errors->all() as $error)
             <p style="color: red">{{ $error }}</p>
         @endforeach
@@ -11,6 +11,7 @@
             @method('PUT')
             <label for="author">Author:</label>
             <br>
+            <input type="hidden" name="post_id" value="{{ $comment->post_id }}">
             <input type="text" id="author" name="author" required value="{{ old('author', $comment->author) }}">
             <br><br>
             <label for="body">Content:</label>

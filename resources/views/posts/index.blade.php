@@ -20,7 +20,8 @@
             @foreach ($posts as $post)
                 <li><a href="{{ route('posts.show', $post->id) }}">{{ $post->title }}</a>|
                     <span>{{ $post->jalaliDate }}</span>
-                    @if (Auth::user()->isAdmin())
+                    <span>|By: {{ $post->user->name }}|</span>
+                    @if (Auth::user()->is_admin)
                         <a href="{{ route('posts.edit', $post->id) }}">Edit</a> |
                         <form action="{{ route('posts.destroy', $post->id) }}" method="POST" style="display:inline;">
                             @csrf

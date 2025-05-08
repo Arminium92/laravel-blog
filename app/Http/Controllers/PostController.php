@@ -78,7 +78,7 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         $user = Auth::user();
-        if (!$user->isAdmin() && $post->user_id !== $user->id) {
+        if (!$user->is_admin && $post->user_id !== $user->id) {
             abort(403, 'Unauthorized action!');
         }
         $categories = Category::all();
@@ -91,7 +91,7 @@ class PostController extends Controller
     public function update(PostRequest $request, Post $post)
     {
         $user = Auth::user();
-        if (!$user->isAdmin() && $post->user_id !== $user->id) {
+        if (!$user->is_admin && $post->user_id !== $user->id) {
             abort(403, 'Unauthorized action!');
         }
         $post->title = $request->title;
@@ -111,7 +111,7 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $user = Auth::user();
-        if (!$user->isAdmin() && $post->user_id !== $user->id) {
+        if (!$user->is_admin && $post->user_id !== $user->id) {
             abort(403, 'Unauthorized action!');
         }
         $post->delete();

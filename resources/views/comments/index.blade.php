@@ -18,7 +18,7 @@
             <p style="color: red">{{ $error }}</p>
         @endforeach
         <hr>
-        @if (Auth::user()->isAdmin())
+        @if (Auth::user()->is_admin)
             <form action="">
                 @csrf
                 <input type="text" name="keyword" id="keyword" placeholder="search comment">
@@ -37,7 +37,7 @@
                                 | {{ $comment->created_at }}
                             </span>| <span>{{ $comment->author }}</span>
                         </a><span>|</span>
-                        @if (Auth::user()->isAdmin())
+                        @if (Auth::user()->is_admin)
                             <a href="{{ route('comments.edit', $comment->id) }}">Edit</a> |
                             <form action="{{ route('comments.destroy', $comment->id) }}" method="POST"
                                 style="display:inline;">
