@@ -25,9 +25,10 @@ Route::resource('posts', PostController::class)->middleware('auth')->except('ind
 
 Route::resource('categories', CategoryController::class)->middleware('auth')->except('index', 'show');
 
-Route::resource('comments', CommentController::class)->middleware(IsAdminMiddleware::class);
+Route::resource('comments', CommentController::class)->middleware('auth');
 
 Route::get('/user-posts', [PostController::class, 'userPosts'])->middleware('auth')->name('user-posts');
+Route::get('/user-comments', [CommentController::class, 'userComments'])->middleware('auth')->name('user-comments');
 
 // Public Routes
 Route::resource('posts', PostController::class)->only('index', 'show');

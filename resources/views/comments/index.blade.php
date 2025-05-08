@@ -18,25 +18,32 @@
             <p style="color: red">{{ $error }}</p>
         @endforeach
         <hr>
-        <ul>
-            @foreach ($comments as $comment)
-                <li>
-                    <a href="{{ route('comments.show', $comment->id) }}">{{ $comment->body }}
-                        <span>
-                            | {{ $comment->created_at }}
-                        </span>| <span>{{ $comment->author }}</span>
-                    </a><span>|</span>
-                    @if (Auth::user()->isAdmin())
-                        <a href="{{ route('comments.edit', $comment->id) }}">Edit</a> |
-                        <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit">Delete</button>
-                        </form>
-                    @endif
+        @if (Auth::user()->isAdmin())
+            <ul>
 
-                </li>
-            @endforeach
-        </ul>
+                @foreach ($comments as $comment)
+                    <li>
+                        <a href="{{ route('comments.show', $comment->id) }}">{{ $comment->body }}
+                            <span>
+                                | {{ $comment->created_at }}
+                            </span>| <span>{{ $comment->author }}</span>
+                        </a><span>|</span>
+                        @if (Auth::user()->isAdmin())
+                            <a href="{{ route('comments.edit', $comment->id) }}">Edit</a> |
+                            <form action="{{ route('comments.destroy', $comment->id) }}" method="POST"
+                                style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit">Delete</button>
+                            </form>
+                        @endif
+
+                    </li>
+                @endforeach
+                @else
+                <p>You are not allowed to see all comments</p>
+            </ul>
+        @endif
+
     </div>
 @endsection

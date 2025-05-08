@@ -28,6 +28,8 @@ const breadcrumbs: BreadcrumbItem[] = [
             <a :href="route('comments.index')" class="btn btn-primary bg-gray-500 px-4 py-2 rounded-lg">Comments</a>
             <a :href="route('user-posts')"
                 class="btn btn-secondary bg-gray-600 px-4 py-2 cursor-pointer rounded-lg">My Posts</a>
+            <a :href="route('user-comments')"
+                class="btn btn-secondary bg-gray-600 px-4 py-2 cursor-pointer rounded-lg">My Comments</a>
             <Link :href="route('logout')" method="post"
                 class="btn btn-secondary bg-gray-600 px-4 py-2 cursor-pointer rounded-lg">Logout</Link>
         </nav>

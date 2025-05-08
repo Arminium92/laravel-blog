@@ -59,6 +59,10 @@ class CommentController extends Controller
      */
     public function edit(Comment $comment)
     {
+        $user = Auth::user();
+        if (!$user->isAdmin() && $comment->user_id !== $user->id) {
+            return abort('403', 'Action is unauthorized!');
+        }
         return view('comments.edit', compact('comment'));
     }
 
@@ -67,7 +71,10 @@ class CommentController extends Controller
      */
     public function update(CommentRequest $request, Comment $comment)
     {
-
+        $user = Auth::user();
+        if (!$user->isAdmin() && $comment->user_id !== $user->id) {
+            return abort('403', 'Action is unauthorized!');
+        }
         $comment->author = $request->author;
         $comment->body = $request->body;
         $comment->save();
@@ -80,7 +87,18 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
+        $user = Auth::user();
+        if (!$user->isAdmin() && $comment->user_id !== $user->id) {
+            return abort('403', 'Action is unauthorized!');
+        }
         $comment->delete();
         return redirect()->route('comments.index')->with('delete', 'Comment deleted successfully.');
+    }
+
+    public function userComments()
+    {
+        $userId = Auth::id();
+        $comments = Comment::where('user_id', $userId)->get();
+        return view('comments.user-comments', compact('comments'));
     }
 }
