@@ -13,11 +13,21 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        dd($request->headers->get("referer"));
+        $searchQuery = $request->keyword;
+        $searchCat = $request->category_id;
         Log::info('Visited Posts List');
         $posts = Post::all();
-        return view('posts.index', compact('posts'));
+        $categories = Category::all();
+        if($searchQuery){ // $searchQuery exists & $searchQuery != null
+            $posts = Post::where("title", 'LIKE',  '%' .$searchQuery . '%')->get();
+        }
+        if($searchQuery && $searchCat){
+            $posts = Post::where("title", 'LIKE',  '%' .$searchQuery . '%')->where("category_id", "=", $searchCat)->get();
+        }
+        return view('posts.index', compact('posts', 'categories'));
     }
 
     /**
