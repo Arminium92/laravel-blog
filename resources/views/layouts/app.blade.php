@@ -16,11 +16,14 @@
             <a href="{{ route('posts.create') }}" style="text-decoration: none; padding: .5rem 1rem; background-color: lightgray; border-radius: .3rem; cursor: pointer;">Create Post</a> |
             <a href="{{ route('categories.create') }}" style="text-decoration: none; padding: .5rem 1rem; background-color: lightgray; border-radius: .3rem; cursor: pointer;">Create Category</a> |
             <a href="{{ route('comments.index') }}" style="text-decoration: none; padding: .5rem 1rem; background-color: lightgray; border-radius: .3rem; cursor: pointer;">Comments</a> |
-            <a href="{{ route('comments.create') }}" style="text-decoration: none; padding: .5rem 1rem; background-color: lightgray; border-radius: .3rem; cursor: pointer;">Add a comment</a> |
+          
             <form action="{{ route('logout') }}" method="post">
+                @csrf
                 <button type="submit" style="text-decoration: none; padding: .5rem 1rem; background-color: lightgray; border-radius: .3rem; cursor: pointer; border:none;">Logout</button>
             </form> |
             <a href="{{ route('dashboard') }}" style="text-decoration: none; padding: .5rem 1rem; background-color: lightgray; border-radius: .3rem; cursor: pointer;">Dashboard</a> |
+            <a href="{{ route('user-posts') }}" style="text-decoration: none; padding: .5rem 1rem; background-color: lightgray; border-radius: .3rem; cursor: pointer;">My posts</a> |
+            <a href="{{ route('user-comments') }}" style="text-decoration: none; padding: .5rem 1rem; background-color: lightgray; border-radius: .3rem; cursor: pointer;">My Comments</a>
         </nav>
 
         @yield('content')

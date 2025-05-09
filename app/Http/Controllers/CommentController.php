@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CommentRequest;
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class CommentController extends Controller
@@ -12,11 +13,22 @@ class CommentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         Log::info('Visited Comments List');
-        $comments = Comment::all();
-        return view('comments.index', compact('comments'));
+        $searchQuery = $request->keyword;
+        $error = '';
+
+        if ($searchQuery) {
+            $comments = Comment::where('author', 'LIKE', '%' . $searchQuery . "%")->get();
+            if($comments->isEmpty()) {
+                $error = 'Author does not exist.';
+            }
+            // dd($comments);
+        } else {
+            $comments = Comment::all();
+        }
+        return view('comments.index', compact('comments', 'error'));
     }
 
     /**
@@ -37,10 +49,12 @@ class CommentController extends Controller
         $comment = new Comment();
         $comment->author = $request->author;
         $comment->body = $request->body;
+        $comment->post_id = $request->post_id;
+        $comment->user_id = Auth::id();
 
         $comment->save();
 
-        return redirect()->route('comments.index')->with('create', 'Comment created successfully.');
+        return redirect()->back()->with('success_comment', 'Comment added successfully.');
     }
 
     /**
@@ -56,6 +70,10 @@ class CommentController extends Controller
      */
     public function edit(Comment $comment)
     {
+        $user = Auth::user();
+        if (!$user->is_admin && $comment->user_id !== $user->id) {
+            return abort('403', 'Action is unauthorized!');
+        }
         return view('comments.edit', compact('comment'));
     }
 
@@ -64,7 +82,10 @@ class CommentController extends Controller
      */
     public function update(CommentRequest $request, Comment $comment)
     {
-
+        $user = Auth::user();
+        if (!$user->is_admin && $comment->user_id !== $user->id) {
+            return abort('403', 'Action is unauthorized!');
+        }
         $comment->author = $request->author;
         $comment->body = $request->body;
         $comment->save();
@@ -77,7 +98,18 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
+        $user = Auth::user();
+        if (!$user->is_admin && $comment->user_id !== $user->id) {
+            return abort('403', 'Action is unauthorized!');
+        }
         $comment->delete();
         return redirect()->route('comments.index')->with('delete', 'Comment deleted successfully.');
+    }
+
+    public function userComments()
+    {
+        $userId = Auth::id();
+        $comments = Comment::where('user_id', $userId)->get();
+        return view('comments.user-comments', compact('comments'));
     }
 }

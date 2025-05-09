@@ -6,26 +6,29 @@
         <hr>
 
         <form action="">
-            <input type="text" name="keyword" id="keyword">
+            @csrf
             <select name="category_id" id="category_id">
-                <option value="">Select category</option>
-                @foreach($categories as $category)
-                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                <option value="">Select Category</option>
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
                 @endforeach
             </select>
+            <input type="text" name="keyword" id="keyword">
             <input type="submit" value="search">
         </form>
-
         <ul>
             @foreach ($posts as $post)
                 <li><a href="{{ route('posts.show', $post->id) }}">{{ $post->title }}</a>|
                     <span>{{ $post->jalaliDate }}</span>
-                    <a href="{{ route('posts.edit', $post->id) }}">Edit</a> |
-                    <form action="{{ route('posts.destroy', $post->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit">Delete</button>
-                    </form> | Category: {{ $post->category->name ?? 'No Category' }}
+                    <span>|By: {{ $post->user->name }}|</span>
+                    @if (Auth::user()->is_admin)
+                        <a href="{{ route('posts.edit', $post->id) }}">Edit</a> |
+                        <form action="{{ route('posts.destroy', $post->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit">Delete</button>
+                        </form> | Category: {{ $post->category->name ?? 'No Category' }}
+                    @endif
 
                 </li>
             @endforeach

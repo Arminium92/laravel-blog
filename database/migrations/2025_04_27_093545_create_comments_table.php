@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('author');
             $table->string('body');
-            $table->foreignId('post_id')->nullable();
-            $table->foreignId('user_id')->nullable();
+            $table->foreignId('post_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

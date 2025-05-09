@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('body');
             $table->string('cover')->nullable();
             $table->foreignId('category_id')->nullable();
-            $table->foreignId('user_id')->nullable();
-            $table->foreignId('comment_id')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

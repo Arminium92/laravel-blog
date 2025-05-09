@@ -6,6 +6,7 @@ use App\Http\Requests\PostRequest;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
@@ -19,14 +20,21 @@ class PostController extends Controller
         $searchQuery = $request->keyword;
         $searchCat = $request->category_id;
         Log::info('Visited Posts List');
+        // dd($request->all());
+        $searchQuery = $request->keyword;
+        $searchCat = $request->category_id;
+
+
         $posts = Post::all();
         $categories = Category::all();
-        if($searchQuery){ // $searchQuery exists & $searchQuery != null
-            $posts = Post::where("title", 'LIKE',  '%' .$searchQuery . '%')->get();
+        if ($searchQuery) {
+            $posts = Post::where('title', ' ', '%' . $searchQuery . '%')->get();
         }
-        if($searchQuery && $searchCat){
-            $posts = Post::where("title", 'LIKE',  '%' .$searchQuery . '%')->where("category_id", "=", $searchCat)->get();
+        if ($searchQuery && $searchCat) {
+            $posts = Post::where('title', 'LIKE', '%' . $searchQuery . '%')->where('category_id', '=', $searchCat)->get();
         }
+        // dd($posts);
+
         return view('posts.index', compact('posts', 'categories'));
     }
 
@@ -49,6 +57,10 @@ class PostController extends Controller
         $post->title = $request->title;
         $post->body = $request->body;
         $post->category_id = $request->category_id;
+        $post->user_id = Auth::id();
+        if ($request->hasFile('cover')) {
+            $post->cover = $request->file('cover')->store('uploads', 'public');
+        }
 
         $post->save();
 
@@ -68,6 +80,10 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        $user = Auth::user();
+        if (!$user->is_admin && $post->user_id !== $user->id) {
+            abort(403, 'Unauthorized action!');
+        }
         $categories = Category::all();
         return view('posts.edit', compact('post', 'categories'));
     }
@@ -77,14 +93,17 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, Post $post)
     {
-        $request->validate([
-            'title' => 'required|string|min:3',
-            'body' => 'required|string|max:100',
-        ]);
-
+        $user = Auth::user();
+        if (!$user->is_admin && $post->user_id !== $user->id) {
+            abort(403, 'Unauthorized action!');
+        }
         $post->title = $request->title;
         $post->body = $request->body;
         $post->category_id = $request->category_id;
+        if ($request->hasFile('cover')) {
+            $post->cover = $request->file('cover')->store('uploads', 'public');
+        }
+        $post->save();
 
         return redirect()->route('posts.index')->with('update', 'Post updated successfully.');
     }
@@ -94,7 +113,18 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        $user = Auth::user();
+        if (!$user->is_admin && $post->user_id !== $user->id) {
+            abort(403, 'Unauthorized action!');
+        }
         $post->delete();
         return redirect()->route('posts.index')->with('delete', 'Post deleted successfully.');
+    }
+
+    public function userPosts()
+    {
+        $userId = Auth::id();
+        $posts = Post::where('user_id', $userId)->get();
+        return view('posts.user-posts', compact('posts'));
     }
 }
