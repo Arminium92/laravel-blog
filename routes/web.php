@@ -15,6 +15,13 @@ Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('inertiaPosts', function(){
+    return Inertia::render('posts/Index');
+});
+Route::get('inertiaPosts/{post}', function ($postId){
+    $post = \App\Models\Post::find($postId);
+    return Inertia::render('posts/Show')->with(['post' => $post]);
+})->name('inertia.posts.show');
 
 
 // Auth Routes

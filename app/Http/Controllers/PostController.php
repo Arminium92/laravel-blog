@@ -16,7 +16,7 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        dd($request->headers->get("referer"));
+//        dd($request->headers->get("referer"));
         $searchQuery = $request->keyword;
         $searchCat = $request->category_id;
         Log::info('Visited Posts List');
