@@ -7,6 +7,7 @@ use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Inertia\Inertia;
 
 class CommentController extends Controller
 {
@@ -111,5 +112,11 @@ class CommentController extends Controller
         $userId = Auth::id();
         $comments = Comment::where('user_id', $userId)->get();
         return view('comments.user-comments', compact('comments'));
+    }
+
+    public function inertiaIndex() {
+        $comments = Comment::latest()->get();
+
+        return Inertia::render('comments/Index', compact('comments'));
     }
 }

@@ -17,9 +17,13 @@ Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+
+// Inertia Routes
 Route::get('inertiaPosts', [PostController::class, 'inertiaIndex']);
 
 Route::get('inertiaPosts/{post}', [PostController::class, 'inertiaShow'])->name('inertia.posts.show');
+
+Route::get('inertiaComments', [CommentController::class, 'inertiaIndex']);
 
 // Auth Routes
 Route::resource('posts', PostController::class)->middleware('auth')->except('index', 'show');
