@@ -8,6 +8,7 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Inertia\Inertia;
 
 class PostController extends Controller
 {
@@ -123,5 +124,16 @@ class PostController extends Controller
         $userId = Auth::id();
         $posts = Post::where('user_id', $userId)->get();
         return view('posts.user-posts', compact('posts'));
+    }
+
+    public function inertiaIndex()
+    {
+        $posts = Post::latest()->get();
+        return Inertia::render('posts/Index', compact('posts'));
+    }
+
+    public function inertiaShow(Post $post)
+    {
+        return Inertia::render('posts/show')->with(['post' => $post]);
     }
 }

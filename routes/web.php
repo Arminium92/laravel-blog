@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\Api\PostController as ApiPostController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Middleware\IsAdminMiddleware;
+use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -15,7 +17,9 @@ Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('inertiaPosts', [PostController::class, 'inertiaIndex']);
 
+Route::get('inertiaPosts/{post}', [PostController::class, 'inertiaShow'])->name('inertia.posts.show');
 
 // Auth Routes
 Route::resource('posts', PostController::class)->middleware('auth')->except('index', 'show');
