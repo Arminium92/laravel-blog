@@ -8,7 +8,10 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class PostController extends Controller
 {
@@ -50,14 +53,25 @@ class PostController extends Controller
      */
     public function store(PostRequest $request)
     {
+        $imageManager = new ImageManager(new Driver());
 
         $post = new Post();
         $post->title = $request->title;
         $post->body = $request->body;
         $post->category_id = $request->category_id;
         $post->user_id = Auth::id();
+
         if ($request->hasFile('cover')) {
-            $post->cover = $request->file('cover')->store('uploads', 'public');
+            // 1. Load the uploaded Image
+            $image = $request->file('cover');
+            // 2. Manipulate the image
+            $img = $imageManager->read($image)
+                ->scale(400, 300)->blur(30)->toPng();
+            // 3. Save the image to storage
+            $filename = 'uploads/' . uniqid() . '.png';
+            Storage::disk('public')->put($filename, $img->toString());
+
+            $post->cover = $filename;
         }
 
         $post->save();

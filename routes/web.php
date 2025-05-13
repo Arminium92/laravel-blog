@@ -18,6 +18,7 @@ Route::get('dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
+
 // Inertia Routes
 Route::get('inertiaPosts', [PostController::class, 'inertiaIndex']);
 
