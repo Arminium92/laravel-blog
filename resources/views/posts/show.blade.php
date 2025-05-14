@@ -8,7 +8,7 @@
             <img src="{{ asset('storage/' . $post->cover) }}" alt="Cover Image" style="max-width: 300px;">
         @endif
         <h2>{{ $post->title }}</h2>
-        <p>{{ $post->body }}</p>
+        <p>{!! $post->body !!}</p>
         <p>Created at: {{ $post->created_at }}</p>
         <span>Tag: {{ $post->category->name ?? 'No Category' }}</span>
 
