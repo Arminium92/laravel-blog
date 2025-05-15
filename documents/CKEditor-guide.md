@@ -207,49 +207,7 @@ const editorConfig = {
         ]
     },
     initialData:
-        `<h2>Congratulations on setting up CKEditor 5! 🎉</h2>
-        <p>
-            You've successfully created a CKEditor 5 project. This powerful text editor
-            will enhance your application, enabling rich text editing capabilities that
-            are customizable and easy to use.
-        </p>
-        <h3>What's next?</h3>
-        <ol>
-            <li>
-                <strong>Integrate into your app</strong>: time to bring the editing into
-                your application. Take the code you created and add to your application.
-            </li>
-            <li>
-                <strong>Explore features:</strong> Experiment with different plugins and
-                toolbar options to discover what works best for your needs.
-            </li>
-            <li>
-                <strong>Customize your editor:</strong> Tailor the editor's
-                configuration to match your application's style and requirements. Or
-                even write your plugin!
-            </li>
-        </ol>
-        <p>
-            Keep experimenting, and don't hesitate to push the boundaries of what you
-            can achieve with CKEditor 5. Your feedback is invaluable to us as we strive
-            to improve and evolve. Happy editing!
-        </p>
-        <h3>Helpful resources</h3>
-        <ul>
-            <li>📝 <a href="https://portal.ckeditor.com/checkout?plan=free">Trial sign up</a>,</li>
-            <li>📕 <a href="https://ckeditor.com/docs/ckeditor5/latest/installation/index.html">Documentation</a>,</li>
-            <li>⭐️ <a href="https://github.com/ckeditor/ckeditor5">GitHub</a> (star us if you can!),</li>
-            <li>🏠 <a href="https://ckeditor.com">CKEditor Homepage</a>,</li>
-            <li>🧑‍💻 <a href="https://ckeditor.com/ckeditor-5/demo/">CKEditor 5 Demos</a>,</li>
-        </ul>
-        <h3>Need help?</h3>
-        <p>
-            See this text, but the editor is not starting up? Check the browser's
-            console for clues and guidance. It may be related to an incorrect license
-            key if you use premium features or another feature-related requirement. If
-            you cannot make it work, file a GitHub issue, and we will help as soon as
-            possible!
-        </p>`,
+        `<h1>Hello From CKEditor!</h1>`,
     licenseKey: LICENSE_KEY,
     link: {
         addTargetToExternalLinks: true,
@@ -292,5 +250,118 @@ ClassicEditor.create(document.querySelector('#editor'), editorConfig);
 
 You have now set up CKEditor 5 with your custom build and configuration.  
 Feel free to experiment with the features and toolbar options!
+
+---
+
+# CKEditor 5 Custom Build Integration Guide
+
+---
+
+## 6. Make CKEditor Reusable in Laravel (Blade Component)
+
+To keep your code clean and use CKEditor anywhere in your Laravel app, create a **Blade component**.
+
+---
+
+### Step 1: Create the Component Class
+
+Run this command in your terminal:
+
+```bash
+php artisan make:component CKEditor
+```
+
+This creates:
+- `app/View/Components/CKEditor.php` (the PHP class)
+- `resources/views/components/c-k-editor.blade.php` (the Blade view)
+
+---
+
+### Step 2: Edit the Component Class
+
+Open `app/View/Components/CKEditor.php` and update it:
+
+```php
+<?php
+
+namespace App\View\Components;
+
+use Illuminate\View\Component;
+
+class CKEditor extends Component
+{
+    public $name;
+    public $id;
+
+    public function __construct($name, $id = null)
+    {
+        $this->name = $name;
+        $this->id = $id ?? $name;
+    }
+
+    public function render()
+    {
+        return view('components.c-k-editor');
+    }
+}
+```
+
+---
+
+### Step 3: Edit the Blade Component View
+
+Open `resources/views/components/c-k-editor.blade.php` and use:
+
+```php
+<div>
+    <textarea name="{{ $name }}" id="{{ $id ?? $name }}" {{ $attributes }}>{{ $slot }}</textarea>
+    @once
+        @vite(['resources/js/ckeditor-custom.js', 'resources/css/ckeditor-custom.css'])
+    @endonce
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.ClassicEditor) {
+                ClassicEditor.create(document.querySelector('#{{ $id ?? $name }}'), window.editorConfig)
+                    .catch(error => {
+                        console.error(error);
+                    });
+            }
+        });
+    </script>
+</div>
+```
+
+---
+
+### Step 4: Use the Component Anywhere
+
+Now, in any Blade file (for example, your post creation form), just use:
+
+```php
+<x-ckeditor name="body" id="editor">{{ old('body') }}</x-ckeditor>
+```
+
+You can also pass other attributes like `required` or `class`:
+
+```php
+<x-ckeditor name="body" id="editor" required class="form-control">{{ old('body') }}</x-ckeditor>
+```
+
+---
+
+### Step 5: Build Your Assets
+
+After any changes to your JS or CSS, run:
+
+```bash
+npm run dev
+```
+
+---
+
+## 🎉 Done!
+
+You now have a **clean, reusable CKEditor 5** integration in your Laravel project.  
+Just use `<x-ckeditor ...>` wherever you need a rich text editor!
 
 ---

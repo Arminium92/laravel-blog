@@ -10,7 +10,8 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/js/app.ts',
-                'resources/js/ckeditor.js'
+                'resources/js/ckeditor-custom.js',
+                'resources/css/ckeditor-custom.css',
             ],
             ssr: 'resources/js/ssr.ts',
             refresh: true,

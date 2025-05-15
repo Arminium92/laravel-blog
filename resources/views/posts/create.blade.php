@@ -24,7 +24,8 @@
             <div>
                 <label for="body">Body</label>
                 <br>
-                <textarea name="body" id="body"></textarea>
+                <br><br>
+                <x-ckeditor name="body" id="editor">{{ old('body') }}</x-ckeditor>
                 <br><br>
             </div>
             <div>
@@ -40,17 +41,6 @@
                 <br>
                 <input type="file" name="cover" id="cover">
                 <br><br>
-
-                @vite('resources/js/ckeditor.js')
-                <script>
-                    window.addEventListener('DOMContentLoaded', function() {
-                        if (window.ClassicEditor) {
-                            ClassicEditor.create(document.querySelector('#body')).catch(error => {
-                                console.error(error);
-                            });
-                        }
-                    });
-                </script>
             </div>
             <button type="submit">Create Post</button>
         </form>
